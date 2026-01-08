@@ -1,5 +1,7 @@
 # Drive Fair Share Calculator
 
+Acess it here: https://nishizumi-maho.github.io/Nishizumi-Calculator/
+
 A lightweight, multilingual web calculator for iRacing team events. It helps teams determine the equal share and minimum fair share laps for each driver, plus estimated time per driver when average lap time is provided.
 
 ## Features
