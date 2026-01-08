@@ -3,6 +3,8 @@ const totalLapsInput = document.querySelector("#total-laps");
 const driversInput = document.querySelector("#drivers");
 const avgLapMinutesInput = document.querySelector("#avg-lap-minutes");
 const avgLapSecondsInput = document.querySelector("#avg-lap-seconds");
+const raceHoursInput = document.querySelector("#race-hours");
+const raceMinutesInput = document.querySelector("#race-minutes");
 const equalShareOutput = document.querySelector("#equal-share");
 const fairShareOutput = document.querySelector("#fair-share");
 const raceTimeOutput = document.querySelector("#race-time");
@@ -29,6 +31,12 @@ const translations = {
     avgLapSecondsLabel: "Segundos",
     avgLapSecondsPlaceholder: "ex: 15",
     avgLapHelper: "Use este campo para estimar horas/minutos de pista por piloto.",
+    raceDurationLegend: "Tempo total da corrida (opcional)",
+    raceHoursLabel: "Horas",
+    raceHoursPlaceholder: "ex: 24",
+    raceMinutesLabel: "Minutos",
+    raceMinutesPlaceholder: "ex: 0",
+    raceDurationHelper: "Informe o tempo total para estimar voltas com base no tempo médio.",
     submitButton: "Calcular fair share",
     equalShareTitle: "Divisão igual",
     equalShareCaption: "Total de voltas ÷ pilotos (arredondado para cima).",
@@ -49,9 +57,14 @@ const translations = {
     exampleBBody: "Total de voltas: 500 • Pilotos: 18 • Divisão igual: 28 voltas • Fair share: 7 voltas.",
     footerText: "Use esta ferramenta para planejar stints e garantir que todos os pilotos cumpram o fair share.",
     lapsUnit: "voltas",
+    minutesUnit: "minutos",
+    hoursUnit: "horas",
     avgTimePrompt: "Informe o tempo médio",
-    messageInvalidValues: "Informe valores positivos para o total de voltas e pilotos.",
+    messageInvalidValues: "Informe valores positivos para pilotos e voltas.",
     messageInvalidAvgTime: "O tempo médio deve ter segundos entre 0 e 59.",
+    messageInvalidRaceTime: "Os minutos da corrida devem estar entre 0 e 59.",
+    messageMissingLapsOrTime: "Informe o total de voltas ou o tempo total da corrida.",
+    messageMissingAvgForEstimate: "Informe o tempo médio para estimar o total de voltas.",
     messageWithTime: "Cálculo concluído com estimativas de tempo.",
     messageWithoutTime: "Fair share calculado. Informe o tempo médio para estimativas de duração."
   },
@@ -71,6 +84,12 @@ const translations = {
     avgLapSecondsLabel: "Seconds",
     avgLapSecondsPlaceholder: "e.g. 15",
     avgLapHelper: "Use this field to estimate on-track hours/minutes per driver.",
+    raceDurationLegend: "Total race time (optional)",
+    raceHoursLabel: "Hours",
+    raceHoursPlaceholder: "e.g. 24",
+    raceMinutesLabel: "Minutes",
+    raceMinutesPlaceholder: "e.g. 0",
+    raceDurationHelper: "Add total race time to estimate total laps using the average lap time.",
     submitButton: "Calculate fair share",
     equalShareTitle: "Equal share",
     equalShareCaption: "Total laps ÷ drivers (rounded up).",
@@ -91,9 +110,14 @@ const translations = {
     exampleBBody: "Total laps: 500 • Drivers: 18 • Equal share: 28 laps • Fair share: 7 laps.",
     footerText: "Use this tool to plan stints and ensure every driver meets the fair share.",
     lapsUnit: "laps",
+    minutesUnit: "minutes",
+    hoursUnit: "hours",
     avgTimePrompt: "Enter the average lap time",
-    messageInvalidValues: "Enter positive values for total laps and drivers.",
+    messageInvalidValues: "Enter positive values for drivers and total laps.",
     messageInvalidAvgTime: "Average lap time seconds must be between 0 and 59.",
+    messageInvalidRaceTime: "Race time minutes must be between 0 and 59.",
+    messageMissingLapsOrTime: "Enter total laps or total race time.",
+    messageMissingAvgForEstimate: "Enter the average lap time to estimate total laps.",
     messageWithTime: "Calculation complete with time estimates.",
     messageWithoutTime: "Fair share calculated. Add average lap time for duration estimates."
   },
@@ -113,6 +137,12 @@ const translations = {
     avgLapSecondsLabel: "Sekunden",
     avgLapSecondsPlaceholder: "z. B. 15",
     avgLapHelper: "Nutzen Sie dieses Feld, um Fahrzeit pro Fahrer zu schätzen.",
+    raceDurationLegend: "Gesamtrennzeit (optional)",
+    raceHoursLabel: "Stunden",
+    raceHoursPlaceholder: "z. B. 24",
+    raceMinutesLabel: "Minuten",
+    raceMinutesPlaceholder: "z. B. 0",
+    raceDurationHelper: "Gesamtrennzeit hinzufügen, um Runden anhand der Durchschnittszeit zu schätzen.",
     submitButton: "Fair Share berechnen",
     equalShareTitle: "Gleicher Anteil",
     equalShareCaption: "Gesamtrunden ÷ Fahrer (aufgerundet).",
@@ -133,9 +163,14 @@ const translations = {
     exampleBBody: "Gesamtrunden: 500 • Fahrer: 18 • Gleicher Anteil: 28 Runden • Fair Share: 7 Runden.",
     footerText: "Nutzen Sie dieses Tool zur Stint-Planung, damit alle Fahrer den Fair Share erfüllen.",
     lapsUnit: "Runden",
+    minutesUnit: "Minuten",
+    hoursUnit: "Stunden",
     avgTimePrompt: "Durchschnittszeit eingeben",
-    messageInvalidValues: "Bitte positive Werte für Gesamtrunden und Fahrer eingeben.",
+    messageInvalidValues: "Bitte positive Werte für Fahrer und Gesamtrunden eingeben.",
     messageInvalidAvgTime: "Sekunden müssen zwischen 0 und 59 liegen.",
+    messageInvalidRaceTime: "Rennminuten müssen zwischen 0 und 59 liegen.",
+    messageMissingLapsOrTime: "Gesamtrunden oder Gesamtrennzeit eingeben.",
+    messageMissingAvgForEstimate: "Durchschnittszeit eingeben, um Gesamtrunden zu schätzen.",
     messageWithTime: "Berechnung abgeschlossen mit Zeitabschätzung.",
     messageWithoutTime: "Fair Share berechnet. Durchschnittszeit für Dauer schätzen hinzufügen."
   },
@@ -155,6 +190,12 @@ const translations = {
     avgLapSecondsLabel: "Secondes",
     avgLapSecondsPlaceholder: "ex. 15",
     avgLapHelper: "Utilisez ce champ pour estimer le temps de piste par pilote.",
+    raceDurationLegend: "Temps total de course (optionnel)",
+    raceHoursLabel: "Heures",
+    raceHoursPlaceholder: "ex. 24",
+    raceMinutesLabel: "Minutes",
+    raceMinutesPlaceholder: "ex. 0",
+    raceDurationHelper: "Ajoutez le temps total pour estimer le nombre de tours.",
     submitButton: "Calculer le fair share",
     equalShareTitle: "Part égale",
     equalShareCaption: "Total des tours ÷ pilotes (arrondi au supérieur).",
@@ -175,9 +216,14 @@ const translations = {
     exampleBBody: "Total des tours : 500 • Pilotes : 18 • Part égale : 28 tours • Fair share : 7 tours.",
     footerText: "Utilisez cet outil pour planifier les relais et garantir que chaque pilote respecte le fair share.",
     lapsUnit: "tours",
+    minutesUnit: "minutes",
+    hoursUnit: "heures",
     avgTimePrompt: "Saisissez le temps moyen",
-    messageInvalidValues: "Saisissez des valeurs positives pour le total des tours et les pilotes.",
+    messageInvalidValues: "Saisissez des valeurs positives pour les pilotes et le total des tours.",
     messageInvalidAvgTime: "Les secondes doivent être entre 0 et 59.",
+    messageInvalidRaceTime: "Les minutes de course doivent être entre 0 et 59.",
+    messageMissingLapsOrTime: "Saisissez le total des tours ou le temps total de course.",
+    messageMissingAvgForEstimate: "Saisissez le temps moyen pour estimer le total des tours.",
     messageWithTime: "Calcul terminé avec estimation du temps.",
     messageWithoutTime: "Fair share calculé. Ajoutez un temps moyen pour estimer la durée."
   },
@@ -197,6 +243,12 @@ const translations = {
     avgLapSecondsLabel: "Segundos",
     avgLapSecondsPlaceholder: "ej. 15",
     avgLapHelper: "Usa este campo para estimar tiempo de pista por piloto.",
+    raceDurationLegend: "Tiempo total de carrera (opcional)",
+    raceHoursLabel: "Horas",
+    raceHoursPlaceholder: "ej. 24",
+    raceMinutesLabel: "Minutos",
+    raceMinutesPlaceholder: "ej. 0",
+    raceDurationHelper: "Agrega el tiempo total para estimar vueltas.",
     submitButton: "Calcular fair share",
     equalShareTitle: "División igual",
     equalShareCaption: "Vueltas totales ÷ pilotos (redondeado hacia arriba).",
@@ -217,9 +269,14 @@ const translations = {
     exampleBBody: "Vueltas totales: 500 • Pilotos: 18 • División igual: 28 vueltas • Fair share: 7 vueltas.",
     footerText: "Usa esta herramienta para planificar stints y asegurar que todos cumplan el fair share.",
     lapsUnit: "vueltas",
+    minutesUnit: "minutos",
+    hoursUnit: "horas",
     avgTimePrompt: "Ingresa el tiempo medio",
-    messageInvalidValues: "Ingresa valores positivos para vueltas y pilotos.",
+    messageInvalidValues: "Ingresa valores positivos para pilotos y vueltas.",
     messageInvalidAvgTime: "Los segundos deben estar entre 0 y 59.",
+    messageInvalidRaceTime: "Los minutos de carrera deben estar entre 0 y 59.",
+    messageMissingLapsOrTime: "Ingresa el total de vueltas o el tiempo total de carrera.",
+    messageMissingAvgForEstimate: "Ingresa el tiempo medio para estimar el total de vueltas.",
     messageWithTime: "Cálculo completado con estimaciones de tiempo.",
     messageWithoutTime: "Fair share calculado. Agrega el tiempo medio para estimar la duración."
   }
@@ -283,6 +340,7 @@ const calculateFairShare = (totalLaps, drivers) => {
 };
 
 const toTotalSeconds = (minutes, seconds) => minutes * 60 + seconds;
+const toTotalSecondsFromHoursMinutes = (hours, minutes) => (hours * 60 + minutes) * 60;
 
 const formatDuration = (totalSeconds) => {
   if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) {
@@ -291,16 +349,7 @@ const formatDuration = (totalSeconds) => {
 
   const totalMinutes = Math.round(totalSeconds / 60);
   const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  const parts = [];
-
-  if (hours > 0) {
-    parts.push(`${hours}h`);
-  }
-
-  parts.push(`${minutes}m`);
-
-  return parts.join(" ");
+  return `${totalMinutes} ${t("minutesUnit")} (${hours} ${t("hoursUnit")})`;
 };
 
 const renderResults = ({ equalShare, fairShare, avgLapSecondsTotal, totalLaps }) => {
@@ -322,13 +371,17 @@ const renderResults = ({ equalShare, fairShare, avgLapSecondsTotal, totalLaps })
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const totalLaps = Number(totalLapsInput.value);
+  const totalLapsRaw = Number(totalLapsInput.value);
+  const hasTotalLapsInput = totalLapsInput.value !== "";
   const drivers = Number(driversInput.value);
   const avgLapMinutes = Number(avgLapMinutesInput.value || 0);
   const avgLapSeconds = Number(avgLapSecondsInput.value || 0);
   const avgLapSecondsTotal = toTotalSeconds(avgLapMinutes, avgLapSeconds);
+  const raceHours = Number(raceHoursInput.value || 0);
+  const raceMinutes = Number(raceMinutesInput.value || 0);
+  const raceDurationSeconds = toTotalSecondsFromHoursMinutes(raceHours, raceMinutes);
 
-  if (!Number.isFinite(totalLaps) || !Number.isFinite(drivers) || totalLaps <= 0 || drivers <= 0) {
+  if (!Number.isFinite(drivers) || drivers <= 0) {
     resetResults();
     showMessage(t("messageInvalidValues"));
     return;
@@ -340,18 +393,50 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
+  if (raceHours < 0 || raceMinutes < 0 || raceMinutes >= 60) {
+    resetResults();
+    showMessage(t("messageInvalidRaceTime"));
+    return;
+  }
+
+  if (hasTotalLapsInput && (!Number.isFinite(totalLapsRaw) || totalLapsRaw <= 0)) {
+    resetResults();
+    showMessage(t("messageInvalidValues"));
+    return;
+  }
+
+  const hasTotalLaps = Number.isFinite(totalLapsRaw) && totalLapsRaw > 0;
+  const hasRaceDuration = raceDurationSeconds > 0;
+
+  if (!hasTotalLaps && !hasRaceDuration) {
+    resetResults();
+    showMessage(t("messageMissingLapsOrTime"));
+    return;
+  }
+
+  if (!hasTotalLaps && hasRaceDuration && avgLapSecondsTotal <= 0) {
+    resetResults();
+    showMessage(t("messageMissingAvgForEstimate"));
+    return;
+  }
+
+  const totalLaps = hasTotalLaps
+    ? totalLapsRaw
+    : Math.max(1, Math.round(raceDurationSeconds / avgLapSecondsTotal));
   const { equalShare, fairShare } = calculateFairShare(totalLaps, drivers);
   lastResult = { equalShare, fairShare, avgLapSecondsTotal, totalLaps };
   renderResults(lastResult);
   showMessage(avgLapSecondsTotal ? t("messageWithTime") : t("messageWithoutTime"));
 });
 
-[totalLapsInput, driversInput, avgLapMinutesInput, avgLapSecondsInput].forEach((input) => {
-  input.addEventListener("input", () => {
-    showMessage("");
-    resetResults();
-  });
-});
+[totalLapsInput, driversInput, avgLapMinutesInput, avgLapSecondsInput, raceHoursInput, raceMinutesInput].forEach(
+  (input) => {
+    input.addEventListener("input", () => {
+      showMessage("");
+      resetResults();
+    });
+  }
+);
 
 languageButtons.forEach((button) => {
   button.addEventListener("click", () => {

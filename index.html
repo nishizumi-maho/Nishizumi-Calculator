@@ -16,7 +16,7 @@
           fair share rule.
         </p>
         <div class="language-switcher" role="group" aria-label="Select language">
-          <button class="language-button" type="button" data-lang="en-US" aria-label="English (United States)">🇺🇸</button>
+          <button class="language-button" type="button" data-lang="en-US" aria-label="English">EN</button>
           <button class="language-button" type="button" data-lang="pt-BR" aria-label="Português (Brasil)">🇧🇷</button>
           <button class="language-button" type="button" data-lang="de-DE" aria-label="Deutsch (Deutschland)">🇩🇪</button>
           <button class="language-button" type="button" data-lang="fr-FR" aria-label="Français (France)">🇫🇷</button>
@@ -36,7 +36,6 @@
               step="1"
               placeholder="e.g. 827"
               data-i18n-placeholder="totalLapsPlaceholder"
-              required
             />
           </div>
           <div class="field">
@@ -83,6 +82,39 @@
             </div>
             <p class="helper" data-i18n="avgLapHelper">
               Use this field to estimate on-track hours/minutes per driver.
+            </p>
+          </fieldset>
+          <fieldset class="field-group">
+            <legend data-i18n="raceDurationLegend">Total race time (optional)</legend>
+            <div class="inline-fields">
+              <div class="field">
+                <label for="race-hours" data-i18n="raceHoursLabel">Hours</label>
+                <input
+                  type="number"
+                  id="race-hours"
+                  name="race-hours"
+                  min="0"
+                  step="1"
+                  placeholder="e.g. 24"
+                  data-i18n-placeholder="raceHoursPlaceholder"
+                />
+              </div>
+              <div class="field">
+                <label for="race-minutes" data-i18n="raceMinutesLabel">Minutes</label>
+                <input
+                  type="number"
+                  id="race-minutes"
+                  name="race-minutes"
+                  min="0"
+                  max="59"
+                  step="1"
+                  placeholder="e.g. 0"
+                  data-i18n-placeholder="raceMinutesPlaceholder"
+                />
+              </div>
+            </div>
+            <p class="helper" data-i18n="raceDurationHelper">
+              Add total race time to estimate total laps using the average lap time.
             </p>
           </fieldset>
           <button type="submit" class="primary" data-i18n="submitButton">Calculate fair share</button>
