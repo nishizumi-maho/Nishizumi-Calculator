@@ -285,6 +285,7 @@ const translations = {
 const defaultLanguage = "en-US";
 let currentLanguage = defaultLanguage;
 let lastResult = null;
+let lastMessageKey = "";
 
 const t = (key) => translations[currentLanguage]?.[key] ?? translations[defaultLanguage]?.[key] ?? "";
 
@@ -317,6 +318,9 @@ const setLanguage = (language) => {
   if (lastResult) {
     renderResults(lastResult);
   }
+  if (lastMessageKey) {
+    showMessage(lastMessageKey);
+  }
 };
 
 const resetResults = () => {
@@ -329,8 +333,9 @@ const resetResults = () => {
   lastResult = null;
 };
 
-const showMessage = (message) => {
-  messageOutput.textContent = message;
+const showMessage = (messageKey = "") => {
+  lastMessageKey = messageKey;
+  messageOutput.textContent = messageKey ? t(messageKey) : "";
 };
 
 const calculateFairShare = (totalLaps, drivers) => {
@@ -380,43 +385,43 @@ form.addEventListener("submit", (event) => {
   const raceHours = Number(raceHoursInput.value || 0);
   const raceMinutes = Number(raceMinutesInput.value || 0);
   const raceDurationSeconds = toTotalSecondsFromHoursMinutes(raceHours, raceMinutes);
+  const hasRaceDuration = raceDurationSeconds > 0;
 
   if (!Number.isFinite(drivers) || drivers <= 0) {
     resetResults();
-    showMessage(t("messageInvalidValues"));
+    showMessage("messageInvalidValues");
     return;
   }
 
   if (avgLapMinutes < 0 || avgLapSeconds < 0 || avgLapSeconds >= 60) {
     resetResults();
-    showMessage(t("messageInvalidAvgTime"));
+    showMessage("messageInvalidAvgTime");
     return;
   }
 
   if (raceHours < 0 || raceMinutes < 0 || raceMinutes >= 60) {
     resetResults();
-    showMessage(t("messageInvalidRaceTime"));
+    showMessage("messageInvalidRaceTime");
     return;
   }
 
-  if (hasTotalLapsInput && (!Number.isFinite(totalLapsRaw) || totalLapsRaw <= 0)) {
+  if (hasTotalLapsInput && (!Number.isFinite(totalLapsRaw) || totalLapsRaw <= 0) && !hasRaceDuration) {
     resetResults();
-    showMessage(t("messageInvalidValues"));
+    showMessage("messageInvalidValues");
     return;
   }
 
   const hasTotalLaps = Number.isFinite(totalLapsRaw) && totalLapsRaw > 0;
-  const hasRaceDuration = raceDurationSeconds > 0;
 
   if (!hasTotalLaps && !hasRaceDuration) {
     resetResults();
-    showMessage(t("messageMissingLapsOrTime"));
+    showMessage("messageMissingLapsOrTime");
     return;
   }
 
   if (!hasTotalLaps && hasRaceDuration && avgLapSecondsTotal <= 0) {
     resetResults();
-    showMessage(t("messageMissingAvgForEstimate"));
+    showMessage("messageMissingAvgForEstimate");
     return;
   }
 
@@ -426,13 +431,13 @@ form.addEventListener("submit", (event) => {
   const { equalShare, fairShare } = calculateFairShare(totalLaps, drivers);
   lastResult = { equalShare, fairShare, avgLapSecondsTotal, totalLaps };
   renderResults(lastResult);
-  showMessage(avgLapSecondsTotal ? t("messageWithTime") : t("messageWithoutTime"));
+  showMessage(avgLapSecondsTotal ? "messageWithTime" : "messageWithoutTime");
 });
 
 [totalLapsInput, driversInput, avgLapMinutesInput, avgLapSecondsInput, raceHoursInput, raceMinutesInput].forEach(
   (input) => {
     input.addEventListener("input", () => {
-      showMessage("");
+      showMessage();
       resetResults();
     });
   }
