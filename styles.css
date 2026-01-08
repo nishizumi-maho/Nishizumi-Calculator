@@ -69,10 +69,15 @@ h1 {
   background: var(--surface);
   color: var(--text);
   border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 1.1rem;
+  width: 44px;
+  height: 36px;
+  padding: 0;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: border 0.2s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .language-button:hover {
