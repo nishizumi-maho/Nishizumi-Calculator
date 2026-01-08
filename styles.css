@@ -69,8 +69,8 @@ h1 {
   background: var(--surface);
   color: var(--text);
   border-radius: 999px;
-  width: 44px;
-  height: 36px;
+  width: 48px;
+  height: 38px;
   padding: 0;
   font-size: 1.2rem;
   cursor: pointer;
@@ -78,6 +78,13 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.language-button img {
+  width: 26px;
+  height: 18px;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.5);
 }
 
 .language-button:hover {
