@@ -25,7 +25,7 @@ const translations = {
     totalLapsPlaceholder: "ex: 827",
     driversLabel: "Número de pilotos declarados",
     driversPlaceholder: "ex: 6",
-    formHelper: "Obrigatório: pilotos + total de voltas, ou tempo total + tempo médio por volta.",
+    formHelper: "Obrigatório: pilotos + total de voltas, ou tempo total + tempo médio por volta + pilotos.",
     avgLapLegend: "Tempo médio por volta (opcional)",
     avgLapMinutesLabel: "Minutos",
     avgLapMinutesPlaceholder: "ex: 2",
@@ -81,7 +81,7 @@ const translations = {
     totalLapsPlaceholder: "e.g. 827",
     driversLabel: "Declared drivers",
     driversPlaceholder: "e.g. 6",
-    formHelper: "Required: drivers plus total laps, or total race time + average lap time.",
+    formHelper: "Required: drivers + total laps, or total race time + average lap time + drivers.",
     avgLapLegend: "Average lap time (optional)",
     avgLapMinutesLabel: "Minutes",
     avgLapMinutesPlaceholder: "e.g. 2",
@@ -137,7 +137,7 @@ const translations = {
     totalLapsPlaceholder: "z. B. 827",
     driversLabel: "Gemeldete Fahrer",
     driversPlaceholder: "z. B. 6",
-    formHelper: "Erforderlich: Fahrer plus Gesamtrunden oder Gesamtzeit + Durchschnittszeit.",
+    formHelper: "Erforderlich: Fahrer + Gesamtrunden oder Gesamtzeit + Durchschnittszeit + Fahrer.",
     avgLapLegend: "Durchschnittliche Rundenzeit (optional)",
     avgLapMinutesLabel: "Minuten",
     avgLapMinutesPlaceholder: "z. B. 2",
@@ -193,7 +193,7 @@ const translations = {
     totalLapsPlaceholder: "ex. 827",
     driversLabel: "Pilotes déclarés",
     driversPlaceholder: "ex. 6",
-    formHelper: "Requis : pilotes + total des tours, ou temps total + temps moyen au tour.",
+    formHelper: "Requis : pilotes + total des tours, ou temps total + temps moyen au tour + pilotes.",
     avgLapLegend: "Temps moyen au tour (optionnel)",
     avgLapMinutesLabel: "Minutes",
     avgLapMinutesPlaceholder: "ex. 2",
@@ -249,7 +249,7 @@ const translations = {
     totalLapsPlaceholder: "ej. 827",
     driversLabel: "Pilotos declarados",
     driversPlaceholder: "ej. 6",
-    formHelper: "Obligatorio: pilotos + vueltas totales, o tiempo total + tiempo medio por vuelta.",
+    formHelper: "Obligatorio: pilotos + vueltas totales, o tiempo total + tiempo medio por vuelta + pilotos.",
     avgLapLegend: "Tiempo medio por vuelta (opcional)",
     avgLapMinutesLabel: "Minutos",
     avgLapMinutesPlaceholder: "ej. 2",
@@ -301,6 +301,15 @@ const defaultLanguage = "en-US";
 let currentLanguage = defaultLanguage;
 let lastResult = null;
 let lastMessageKey = "";
+const errorMessageKeys = new Set([
+  "messageMissingDrivers",
+  "messageInvalidDrivers",
+  "messageInvalidValues",
+  "messageInvalidAvgTime",
+  "messageInvalidRaceTime",
+  "messageMissingLapsOrTime",
+  "messageMissingAvgForEstimate"
+]);
 
 const t = (key) => translations[currentLanguage]?.[key] ?? translations[defaultLanguage]?.[key] ?? "";
 
@@ -351,6 +360,8 @@ const resetResults = () => {
 const showMessage = (messageKey = "") => {
   lastMessageKey = messageKey;
   messageOutput.textContent = messageKey ? t(messageKey) : "";
+  const isError = messageKey && errorMessageKeys.has(messageKey);
+  messageOutput.classList.toggle("error", Boolean(isError));
 };
 
 const calculateFairShare = (totalLaps, drivers) => {
