@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drive Fair Share Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <p class="eyebrow">Team Racing • Drive Fair Share</p>
+        <h1>Fair Share Calculator</h1>
+        <p class="lede">
+          Calculate the minimum laps each declared driver must complete to satisfy the Drive Fair Share rule.
+        </p>
+      </header>
+
+      <section class="card">
+        <form class="form" id="fair-share-form" novalidate>
+          <div class="field">
+            <label for="total-laps">Total team laps completed</label>
+            <input
+              type="number"
+              id="total-laps"
+              name="total-laps"
+              min="1"
+              step="1"
+              placeholder="e.g. 827"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="drivers">Number of declared drivers</label>
+            <input
+              type="number"
+              id="drivers"
+              name="drivers"
+              min="1"
+              step="1"
+              placeholder="e.g. 6"
+              required
+            />
+          </div>
+          <button type="submit" class="primary">Calculate fair share</button>
+          <p class="helper" id="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="results" aria-live="polite">
+        <div class="result-card">
+          <h2>Equal share</h2>
+          <p class="value" id="equal-share">—</p>
+          <p class="caption">Rounded up total laps ÷ drivers.</p>
+        </div>
+        <div class="result-card">
+          <h2>Fair share minimum</h2>
+          <p class="value" id="fair-share">—</p>
+          <p class="caption">25% of the equal share, rounded up.</p>
+        </div>
+      </section>
+
+      <section class="card rules">
+        <h2>Drive Fair Share rule</h2>
+        <p>
+          All declared drivers must drive a “fair share” of the team’s laps. A fair share is defined as at least
+          25% of an equal share of laps. The equal share is the total laps divided by the number of declared drivers,
+          rounded up to the next whole lap.
+        </p>
+        <div class="examples">
+          <article>
+            <h3>Example A</h3>
+            <p>
+              Total laps: 827 • Drivers: 6 • Equal share: 138 laps • Fair share: 35 laps.
+            </p>
+          </article>
+          <article>
+            <h3>Example B</h3>
+            <p>
+              Total laps: 500 • Drivers: 18 • Equal share: 28 laps • Fair share: 7 laps.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Use this tool for Team Racing events that apply the Drive Fair Share rule.</p>
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
