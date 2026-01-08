@@ -372,6 +372,13 @@ const calculateFairShare = (totalLaps, drivers) => {
 
 const toTotalSeconds = (minutes, seconds) => minutes * 60 + seconds;
 const toTotalSecondsFromHoursMinutes = (hours, minutes) => (hours * 60 + minutes) * 60;
+const formatHours = (hours) => {
+  const rounded = Math.round(hours * 100) / 100;
+  if (Number.isInteger(rounded)) {
+    return rounded.toFixed(0);
+  }
+  return rounded.toFixed(2).replace(/\.?0+$/, "");
+};
 
 const formatDuration = (totalSeconds) => {
   if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) {
@@ -379,8 +386,8 @@ const formatDuration = (totalSeconds) => {
   }
 
   const totalMinutes = Math.round(totalSeconds / 60);
-  const hours = Math.floor(totalMinutes / 60);
-  return `${totalMinutes} ${t("minutesUnit")} (${hours} ${t("hoursUnit")})`;
+  const hours = totalSeconds / 3600;
+  return `${totalMinutes} ${t("minutesUnit")} (${formatHours(hours)} ${t("hoursUnit")})`;
 };
 
 const renderResults = ({ equalShare, fairShare, avgLapSecondsTotal, totalLaps }) => {
