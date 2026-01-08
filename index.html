@@ -1,74 +1,74 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora Drive Fair Share</title>
+    <title>Drive Fair Share Calculator</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="container">
       <header class="hero">
         <p class="eyebrow" data-i18n="eyebrow">iRacing Team Events • Drive Fair Share</p>
-        <h1 data-i18n="title">Calculadora de Fair Share</h1>
+        <h1 data-i18n="title">Fair Share Calculator</h1>
         <p class="lede" data-i18n="lede">
-          Descubra a quantidade mínima de voltas e o tempo aproximado que cada piloto precisa cumprir para atender
-          à regra de Drive Fair Share em eventos de equipe do iRacing.
+          Find the minimum laps and approximate time each driver must complete to comply with the iRacing team event
+          fair share rule.
         </p>
-        <div class="language-switcher" role="group" aria-label="Selecionar idioma">
+        <div class="language-switcher" role="group" aria-label="Select language">
+          <button class="language-button" type="button" data-lang="en-US" aria-label="English (United States)">🇺🇸</button>
           <button class="language-button" type="button" data-lang="pt-BR" aria-label="Português (Brasil)">🇧🇷</button>
-          <button class="language-button" type="button" data-lang="en" aria-label="English">🇬🇧</button>
-          <button class="language-button" type="button" data-lang="de" aria-label="Deutsch">🇩🇪</button>
-          <button class="language-button" type="button" data-lang="fr" aria-label="Français">🇫🇷</button>
-          <button class="language-button" type="button" data-lang="es" aria-label="Español">🇪🇸</button>
+          <button class="language-button" type="button" data-lang="de-DE" aria-label="Deutsch (Deutschland)">🇩🇪</button>
+          <button class="language-button" type="button" data-lang="fr-FR" aria-label="Français (France)">🇫🇷</button>
+          <button class="language-button" type="button" data-lang="es-ES" aria-label="Español (España)">🇪🇸</button>
         </div>
       </header>
 
       <section class="card">
         <form class="form" id="fair-share-form" novalidate>
           <div class="field">
-            <label for="total-laps" data-i18n="totalLapsLabel">Total de voltas da equipe</label>
+            <label for="total-laps" data-i18n="totalLapsLabel">Team total laps</label>
             <input
               type="number"
               id="total-laps"
               name="total-laps"
               min="1"
               step="1"
-              placeholder="ex: 827"
+              placeholder="e.g. 827"
               data-i18n-placeholder="totalLapsPlaceholder"
               required
             />
           </div>
           <div class="field">
-            <label for="drivers" data-i18n="driversLabel">Número de pilotos declarados</label>
+            <label for="drivers" data-i18n="driversLabel">Declared drivers</label>
             <input
               type="number"
               id="drivers"
               name="drivers"
               min="1"
               step="1"
-              placeholder="ex: 6"
+              placeholder="e.g. 6"
               data-i18n-placeholder="driversPlaceholder"
               required
             />
           </div>
           <fieldset class="field-group">
-            <legend data-i18n="avgLapLegend">Tempo médio por volta (opcional)</legend>
+            <legend data-i18n="avgLapLegend">Average lap time (optional)</legend>
             <div class="inline-fields">
               <div class="field">
-                <label for="avg-lap-minutes" data-i18n="avgLapMinutesLabel">Minutos</label>
+                <label for="avg-lap-minutes" data-i18n="avgLapMinutesLabel">Minutes</label>
                 <input
                   type="number"
                   id="avg-lap-minutes"
                   name="avg-lap-minutes"
                   min="0"
                   step="1"
-                  placeholder="ex: 2"
+                  placeholder="e.g. 2"
                   data-i18n-placeholder="avgLapMinutesPlaceholder"
                 />
               </div>
               <div class="field">
-                <label for="avg-lap-seconds" data-i18n="avgLapSecondsLabel">Segundos</label>
+                <label for="avg-lap-seconds" data-i18n="avgLapSecondsLabel">Seconds</label>
                 <input
                   type="number"
                   id="avg-lap-seconds"
@@ -76,74 +76,74 @@
                   min="0"
                   max="59"
                   step="1"
-                  placeholder="ex: 15"
+                  placeholder="e.g. 15"
                   data-i18n-placeholder="avgLapSecondsPlaceholder"
                 />
               </div>
             </div>
             <p class="helper" data-i18n="avgLapHelper">
-              Use este campo para estimar horas/minutos de pista por piloto.
+              Use this field to estimate on-track hours/minutes per driver.
             </p>
           </fieldset>
-          <button type="submit" class="primary" data-i18n="submitButton">Calcular fair share</button>
+          <button type="submit" class="primary" data-i18n="submitButton">Calculate fair share</button>
           <p class="helper" id="form-message" role="status" aria-live="polite"></p>
         </form>
       </section>
 
       <section class="results" aria-live="polite">
         <div class="result-card">
-          <h2 data-i18n="equalShareTitle">Divisão igual</h2>
+          <h2 data-i18n="equalShareTitle">Equal share</h2>
           <p class="value" id="equal-share">—</p>
           <p class="caption" data-i18n="equalShareCaption">
-            Total de voltas ÷ pilotos (arredondado para cima).
+            Total laps ÷ drivers (rounded up).
           </p>
         </div>
         <div class="result-card">
-          <h2 data-i18n="fairShareTitle">Mínimo de fair share</h2>
+          <h2 data-i18n="fairShareTitle">Minimum fair share</h2>
           <p class="value" id="fair-share">—</p>
-          <p class="caption" data-i18n="fairShareCaption">25% da divisão igual (arredondado para cima).</p>
+          <p class="caption" data-i18n="fairShareCaption">25% of the equal share (rounded up).</p>
         </div>
         <div class="result-card">
-          <h2 data-i18n="raceTimeTitle">Tempo total estimado</h2>
+          <h2 data-i18n="raceTimeTitle">Estimated total time</h2>
           <p class="value" id="race-time">—</p>
           <p class="caption" data-i18n="raceTimeCaption">
-            Baseado em voltas totais × tempo médio de volta.
+            Based on total laps × average lap time.
           </p>
         </div>
         <div class="result-card">
-          <h2 data-i18n="equalShareTimeTitle">Tempo por piloto (divisão igual)</h2>
+          <h2 data-i18n="equalShareTimeTitle">Time per driver (equal share)</h2>
           <p class="value" id="equal-share-time">—</p>
           <p class="caption" data-i18n="equalShareTimeCaption">
-            Tempo aproximado por piloto na divisão igual.
+            Approximate time per driver at equal share.
           </p>
         </div>
         <div class="result-card">
-          <h2 data-i18n="fairShareTimeTitle">Tempo por piloto (fair share)</h2>
+          <h2 data-i18n="fairShareTimeTitle">Time per driver (fair share)</h2>
           <p class="value" id="fair-share-time">—</p>
           <p class="caption" data-i18n="fairShareTimeCaption">
-            Tempo mínimo por piloto para estar em conformidade.
+            Minimum time per driver to stay compliant.
           </p>
         </div>
       </section>
 
       <section class="card rules">
-        <h2 data-i18n="rulesTitle">Regra de Drive Fair Share</h2>
+        <h2 data-i18n="rulesTitle">Drive Fair Share Rule</h2>
         <p data-i18n="rulesBody">
-          Todos os pilotos declarados devem completar um “fair share” das voltas da equipe. O fair share equivale a
-          pelo menos 25% da divisão igual de voltas. A divisão igual é o total de voltas dividido pelo número de
-          pilotos declarados, arredondado para a próxima volta inteira.
+          All declared drivers must complete a fair share of the team’s laps. Fair share equals at least 25% of the
+          equal share. Equal share is total laps divided by the number of declared drivers, rounded up to the next
+          whole lap.
         </p>
         <div class="examples">
           <article>
-            <h3 data-i18n="exampleATitle">Exemplo A</h3>
+            <h3 data-i18n="exampleATitle">Example A</h3>
             <p data-i18n="exampleABody">
-              Total de voltas: 827 • Pilotos: 6 • Divisão igual: 138 voltas • Fair share: 35 voltas.
+              Total laps: 827 • Drivers: 6 • Equal share: 138 laps • Fair share: 35 laps.
             </p>
           </article>
           <article>
-            <h3 data-i18n="exampleBTitle">Exemplo B</h3>
+            <h3 data-i18n="exampleBTitle">Example B</h3>
             <p data-i18n="exampleBBody">
-              Total de voltas: 500 • Pilotos: 18 • Divisão igual: 28 voltas • Fair share: 7 voltas.
+              Total laps: 500 • Drivers: 18 • Equal share: 28 laps • Fair share: 7 laps.
             </p>
           </article>
         </div>
@@ -151,7 +151,7 @@
 
       <footer class="footer">
         <p data-i18n="footerText">
-          Use esta ferramenta para planejar stints e garantir que todos os pilotos cumpram o fair share.
+          Use this tool to plan stints and ensure every driver meets the fair share.
         </p>
       </footer>
     </main>

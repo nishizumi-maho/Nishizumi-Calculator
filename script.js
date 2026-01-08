@@ -55,7 +55,7 @@ const translations = {
     messageWithTime: "Cálculo concluído com estimativas de tempo.",
     messageWithoutTime: "Fair share calculado. Informe o tempo médio para estimativas de duração."
   },
-  en: {
+  "en-US": {
     pageTitle: "Drive Fair Share Calculator",
     eyebrow: "iRacing Team Events • Drive Fair Share",
     title: "Fair Share Calculator",
@@ -97,7 +97,7 @@ const translations = {
     messageWithTime: "Calculation complete with time estimates.",
     messageWithoutTime: "Fair share calculated. Add average lap time for duration estimates."
   },
-  de: {
+  "de-DE": {
     pageTitle: "Drive-Fair-Share-Rechner",
     eyebrow: "iRacing Team Events • Drive Fair Share",
     title: "Fair-Share-Rechner",
@@ -139,7 +139,7 @@ const translations = {
     messageWithTime: "Berechnung abgeschlossen mit Zeitabschätzung.",
     messageWithoutTime: "Fair Share berechnet. Durchschnittszeit für Dauer schätzen hinzufügen."
   },
-  fr: {
+  "fr-FR": {
     pageTitle: "Calculateur de fair share",
     eyebrow: "iRacing Team Events • Drive Fair Share",
     title: "Calculateur de fair share",
@@ -181,7 +181,7 @@ const translations = {
     messageWithTime: "Calcul terminé avec estimation du temps.",
     messageWithoutTime: "Fair share calculé. Ajoutez un temps moyen pour estimer la durée."
   },
-  es: {
+  "es-ES": {
     pageTitle: "Calculadora de fair share",
     eyebrow: "iRacing Team Events • Drive Fair Share",
     title: "Calculadora de fair share",
@@ -225,10 +225,11 @@ const translations = {
   }
 };
 
-let currentLanguage = "pt-BR";
+const defaultLanguage = "en-US";
+let currentLanguage = defaultLanguage;
 let lastResult = null;
 
-const t = (key) => translations[currentLanguage]?.[key] ?? translations["pt-BR"][key] ?? "";
+const t = (key) => translations[currentLanguage]?.[key] ?? translations[defaultLanguage]?.[key] ?? "";
 
 const setLanguage = (language) => {
   if (!translations[language]) {
@@ -364,4 +365,5 @@ languageButtons.forEach((button) => {
 });
 
 const storedLanguage = localStorage.getItem("preferredLanguage");
-setLanguage(storedLanguage || "pt-BR");
+const initialLanguage = translations[storedLanguage] ? storedLanguage : defaultLanguage;
+setLanguage(initialLanguage);
