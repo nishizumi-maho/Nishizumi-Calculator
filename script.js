@@ -376,8 +376,8 @@ const renderResults = ({ equalShare, fairShare, avgLapSecondsTotal, totalLaps })
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const totalLapsRaw = Number(totalLapsInput.value);
-  const hasTotalLapsInput = totalLapsInput.value !== "";
+  const hasTotalLapsInput = totalLapsInput.value.trim() !== "";
+  const totalLapsRaw = hasTotalLapsInput ? Number(totalLapsInput.value) : Number.NaN;
   const drivers = Number(driversInput.value);
   const avgLapMinutes = Number(avgLapMinutesInput.value || 0);
   const avgLapSeconds = Number(avgLapSecondsInput.value || 0);
@@ -386,6 +386,7 @@ form.addEventListener("submit", (event) => {
   const raceMinutes = Number(raceMinutesInput.value || 0);
   const raceDurationSeconds = toTotalSecondsFromHoursMinutes(raceHours, raceMinutes);
   const hasRaceDuration = raceDurationSeconds > 0;
+  const canEstimateLaps = hasRaceDuration && avgLapSecondsTotal > 0;
 
   if (!Number.isFinite(drivers) || drivers <= 0) {
     resetResults();
@@ -405,7 +406,7 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-  if (hasTotalLapsInput && (!Number.isFinite(totalLapsRaw) || totalLapsRaw <= 0) && !hasRaceDuration) {
+  if (hasTotalLapsInput && (!Number.isFinite(totalLapsRaw) || totalLapsRaw <= 0) && !canEstimateLaps) {
     resetResults();
     showMessage("messageInvalidValues");
     return;
