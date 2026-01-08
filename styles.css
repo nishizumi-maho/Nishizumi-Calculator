@@ -56,6 +56,34 @@ h1 {
   line-height: 1.5;
 }
 
+.language-switcher {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.language-button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: border 0.2s ease, transform 0.2s ease;
+}
+
+.language-button:hover {
+  transform: translateY(-1px);
+}
+
+.language-button.active {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
 .card {
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(15, 23, 42, 0.8));
   border: 1px solid var(--border);
