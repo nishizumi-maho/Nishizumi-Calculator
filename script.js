@@ -25,6 +25,7 @@ const translations = {
     totalLapsPlaceholder: "ex: 827",
     driversLabel: "Número de pilotos declarados",
     driversPlaceholder: "ex: 6",
+    formHelper: "Obrigatório: pilotos + total de voltas, ou tempo total + tempo médio por volta.",
     avgLapLegend: "Tempo médio por volta (opcional)",
     avgLapMinutesLabel: "Minutos",
     avgLapMinutesPlaceholder: "ex: 2",
@@ -60,7 +61,9 @@ const translations = {
     minutesUnit: "minutos",
     hoursUnit: "horas",
     avgTimePrompt: "Informe o tempo médio",
-    messageInvalidValues: "Informe valores positivos para pilotos e voltas.",
+    messageMissingDrivers: "Informe o número de pilotos declarados para calcular o fair share.",
+    messageInvalidDrivers: "O número de pilotos deve ser maior que zero.",
+    messageInvalidValues: "Informe valores positivos para o total de voltas.",
     messageInvalidAvgTime: "O tempo médio deve ter segundos entre 0 e 59.",
     messageInvalidRaceTime: "Os minutos da corrida devem estar entre 0 e 59.",
     messageMissingLapsOrTime: "Informe o total de voltas ou o tempo total da corrida.",
@@ -78,6 +81,7 @@ const translations = {
     totalLapsPlaceholder: "e.g. 827",
     driversLabel: "Declared drivers",
     driversPlaceholder: "e.g. 6",
+    formHelper: "Required: drivers plus total laps, or total race time + average lap time.",
     avgLapLegend: "Average lap time (optional)",
     avgLapMinutesLabel: "Minutes",
     avgLapMinutesPlaceholder: "e.g. 2",
@@ -113,7 +117,9 @@ const translations = {
     minutesUnit: "minutes",
     hoursUnit: "hours",
     avgTimePrompt: "Enter the average lap time",
-    messageInvalidValues: "Enter positive values for drivers and total laps.",
+    messageMissingDrivers: "Enter the number of declared drivers to calculate fair share.",
+    messageInvalidDrivers: "Declared drivers must be greater than zero.",
+    messageInvalidValues: "Enter a positive value for total laps.",
     messageInvalidAvgTime: "Average lap time seconds must be between 0 and 59.",
     messageInvalidRaceTime: "Race time minutes must be between 0 and 59.",
     messageMissingLapsOrTime: "Enter total laps or total race time.",
@@ -131,6 +137,7 @@ const translations = {
     totalLapsPlaceholder: "z. B. 827",
     driversLabel: "Gemeldete Fahrer",
     driversPlaceholder: "z. B. 6",
+    formHelper: "Erforderlich: Fahrer plus Gesamtrunden oder Gesamtzeit + Durchschnittszeit.",
     avgLapLegend: "Durchschnittliche Rundenzeit (optional)",
     avgLapMinutesLabel: "Minuten",
     avgLapMinutesPlaceholder: "z. B. 2",
@@ -166,7 +173,9 @@ const translations = {
     minutesUnit: "Minuten",
     hoursUnit: "Stunden",
     avgTimePrompt: "Durchschnittszeit eingeben",
-    messageInvalidValues: "Bitte positive Werte für Fahrer und Gesamtrunden eingeben.",
+    messageMissingDrivers: "Bitte die Anzahl der gemeldeten Fahrer eingeben.",
+    messageInvalidDrivers: "Die Anzahl der Fahrer muss größer als null sein.",
+    messageInvalidValues: "Bitte einen positiven Wert für Gesamtrunden eingeben.",
     messageInvalidAvgTime: "Sekunden müssen zwischen 0 und 59 liegen.",
     messageInvalidRaceTime: "Rennminuten müssen zwischen 0 und 59 liegen.",
     messageMissingLapsOrTime: "Gesamtrunden oder Gesamtrennzeit eingeben.",
@@ -184,6 +193,7 @@ const translations = {
     totalLapsPlaceholder: "ex. 827",
     driversLabel: "Pilotes déclarés",
     driversPlaceholder: "ex. 6",
+    formHelper: "Requis : pilotes + total des tours, ou temps total + temps moyen au tour.",
     avgLapLegend: "Temps moyen au tour (optionnel)",
     avgLapMinutesLabel: "Minutes",
     avgLapMinutesPlaceholder: "ex. 2",
@@ -219,7 +229,9 @@ const translations = {
     minutesUnit: "minutes",
     hoursUnit: "heures",
     avgTimePrompt: "Saisissez le temps moyen",
-    messageInvalidValues: "Saisissez des valeurs positives pour les pilotes et le total des tours.",
+    messageMissingDrivers: "Saisissez le nombre de pilotes déclarés pour calculer le fair share.",
+    messageInvalidDrivers: "Le nombre de pilotes doit être supérieur à zéro.",
+    messageInvalidValues: "Saisissez une valeur positive pour le total des tours.",
     messageInvalidAvgTime: "Les secondes doivent être entre 0 et 59.",
     messageInvalidRaceTime: "Les minutes de course doivent être entre 0 et 59.",
     messageMissingLapsOrTime: "Saisissez le total des tours ou le temps total de course.",
@@ -237,6 +249,7 @@ const translations = {
     totalLapsPlaceholder: "ej. 827",
     driversLabel: "Pilotos declarados",
     driversPlaceholder: "ej. 6",
+    formHelper: "Obligatorio: pilotos + vueltas totales, o tiempo total + tiempo medio por vuelta.",
     avgLapLegend: "Tiempo medio por vuelta (opcional)",
     avgLapMinutesLabel: "Minutos",
     avgLapMinutesPlaceholder: "ej. 2",
@@ -272,7 +285,9 @@ const translations = {
     minutesUnit: "minutos",
     hoursUnit: "horas",
     avgTimePrompt: "Ingresa el tiempo medio",
-    messageInvalidValues: "Ingresa valores positivos para pilotos y vueltas.",
+    messageMissingDrivers: "Ingresa la cantidad de pilotos declarados para calcular el fair share.",
+    messageInvalidDrivers: "La cantidad de pilotos debe ser mayor que cero.",
+    messageInvalidValues: "Ingresa un valor positivo para el total de vueltas.",
     messageInvalidAvgTime: "Los segundos deben estar entre 0 y 59.",
     messageInvalidRaceTime: "Los minutos de carrera deben estar entre 0 y 59.",
     messageMissingLapsOrTime: "Ingresa el total de vueltas o el tiempo total de carrera.",
@@ -378,6 +393,7 @@ form.addEventListener("submit", (event) => {
 
   const hasTotalLapsInput = totalLapsInput.value.trim() !== "";
   const totalLapsRaw = hasTotalLapsInput ? Number(totalLapsInput.value) : Number.NaN;
+  const hasDriversInput = driversInput.value.trim() !== "";
   const drivers = Number(driversInput.value);
   const avgLapMinutes = Number(avgLapMinutesInput.value || 0);
   const avgLapSeconds = Number(avgLapSecondsInput.value || 0);
@@ -388,9 +404,15 @@ form.addEventListener("submit", (event) => {
   const hasRaceDuration = raceDurationSeconds > 0;
   const canEstimateLaps = hasRaceDuration && avgLapSecondsTotal > 0;
 
+  if (!hasDriversInput) {
+    resetResults();
+    showMessage("messageMissingDrivers");
+    return;
+  }
+
   if (!Number.isFinite(drivers) || drivers <= 0) {
     resetResults();
-    showMessage("messageInvalidValues");
+    showMessage("messageInvalidDrivers");
     return;
   }
 
